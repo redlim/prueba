@@ -4,46 +4,49 @@
 <div class="row" ng-show="issues.length">
   <div class="list-group">
     <a class="list-group-item" ng-repeat="issue in issues" ng-click="issueDetails(issue)"
-        ng-class="{'list-group-item-danger': issue.level===4 ,
-        'list-group-item-warning': issue.level===3,
-         'list-group-item-primary': issue.level===2 ,
-         'list-group-item-info': issue.level===1 }" >
+        ng-class="{'list-group-item-danger': issue.level.id==='4' ,
+        'list-group-item-warning': issue.level.id==='3',
+         'list-group-item-primary': issue.level.id==='2' ,
+         'list-group-item-info': issue.level.id==='1' }" >
       <h4 class="list-group-item-heading">{{issue.description}}</h4>
       <p class="list-group-item-text">{{issue.summary}}</p>
     </a>
   </div>
 </div>
 
-<form ng-show="showFormDetails">
+<form ng-show="showFormDetails" ng-submit="save(currentIssue)">
   <fieldset class="form-group">
     <label for="project">Proyecto:</label>
-    <input type="text" class="form-control" id="project" value="{{detailsName}}">
+    <input type="text" class="form-control" id="project" ng-model="currentIssue.name">
   </fieldset>
   <fieldset class="form-group">
     <label for="description">Descripción:</label>
-    <input id="description" type="text" class="form-control" value="{{detailsDescription}}">
+    <input id="description" type="text" class="form-control" ng-model="currentIssue.description">
   </fieldset>
   <fieldset class="form-group">
     <label for="summary">Resumen</label>
-    <textarea class="form-control" id="summary" rows="3">{{detailsSummary}}</textarea>
+    <textarea class="form-control" id="summary" ng-model="currentIssue.summary" rows="3"></textarea>
   </fieldset>
   <fieldset class="form-group">
     <label for="level">Nivel:</label>
     <select class="form-control" id="level" ng-options="option.name for option in detailsLevel.availableOptions track by option.id"
-            ng-model="detailsLevel.selectedOption">
+            ng-model="currentIssue.level">
     </select>
   </fieldset>
   <fieldset class="form-group">
     <label for="state">Estado</label>
     <select class="form-control" id="state" ng-options="option.name for option in detailsState.availableOptions track by option.id"
-            ng-model="detailsState.selectedOption">
+            ng-model="currentIssue.state"  ng-change="changeState()" >
     </select>
+    <fieldset class="form-group" ng-show="showNewHistory">
+      <label for="newHistory" >Justificación:</label>
+      <textarea class="form-control" id="newHistory" ng-model="newHistory" rows="3"></textarea>
+    </fieldset>
   </fieldset>
-  <p>Evolución</p>
-  <fieldset ng-repeat="history in detailsHistories"  class="form-group">
-    <label for="history">{{history}}</label>
-    <textarea class="form-control" id="history" rows="2">{{history}}</textarea>
-  </fieldset>
-  <button type="submit" class="btn btn-primary">OK</button><button type="button" class="btn btn-warning">Editar</button>
+  <h4>Historial</h4>
+  <div  ng-repeat="history in currentIssue.histories">
+    <p>{{history}}</p>
+  </div>
+  <button type="submit"  class="btn btn-primary">OK</button><button type="button" class="btn btn-warning">Editar</button>
 </form>
 <p class="alert alert-danger" ng-show="err">{{err}}</p>
