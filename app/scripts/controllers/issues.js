@@ -1,42 +1,82 @@
 'use strict';
 /**
- * @ngdoc function
- * @name cycleItCustomerServiceApp.controller:ChatCtrl
- * @description
- * # ChatCtrl
- * A demo of using AngularFire to manage a synchronized list.
+ *
+ *
  */
 angular.module('cycleItCustomerServiceApp')
   .controller('IssuesCtrl', function ($scope, Ref, $firebaseArray, $timeout) {
-    //el formulario de edición se mantiene oculto
-    $scope.showFormDetails = false;
+
     // sincronización de las issues
     $scope.issues = $firebaseArray(Ref.child('issues'));
+
+    //el formulario de edición se mantiene oculto
+    hideForm();
+
     $scope.currentIssue = {};
     // display any errors
     $scope.issues.$loaded().catch(alert);
-    //editarIncidencia:
-    $scope.newHistory ="";
-    $scope.showNewHistory = false;
+
+    //no se edita al principio;
+    disabledEdit();
 
     $scope.changeState = function(){
-      console.log("hola");
       $scope.showNewHistory = true;
     };
     $scope.issueDetails = function(issue){
-      $scope.showNewHistory = false;
-      $scope.showFormDetails = true;
+      showForm();
+      startOptions();
       $scope.currentIssue = issue;
+      $scope.detailsLevel.selectedOption = {id:  $scope.currentIssue.level};
+      $scope.detailsState.selectedOption = {id: $scope.currentIssue.state}
+    };
+
+
+    $scope.newIssue = function (){
+      $scope.currentIssue = {};
+      showForm();
+      enableEdit();
+      startOptions();
+
+    };
+
+    $scope.save = function(currentIssue){
+
+      if(currentIssue.histories == undefined ){
+        currentIssue.histories =[];
+      }
+
+      var d = new Date();
+      currentIssue.date = d.toLocaleDateString();
+      console.log(currentIssue.state);
+      var history = currentIssue.state.name +": "+ $scope.newHistory +". Actualizado en "+ currentIssue.date;
+      currentIssue.histories.push(history);
+
+      $scope.issues.$add(currentIssue);
+      $scope.issues.$remove(currentIssue);
+      disabledEdit();
+    };
+
+    $scope.deleteClick = function(issue){
+      $scope.issues.$remove(issue);
+      hideForm();
+    };
+    $scope.editClick = function(){
+      enableEdit();
+    };
+
+    $scope.cancelClick = function(){
+      disabledEdit();
+    };
+    function startOptions(){
+      //estado de la incidencia: abierta, resolviéndose, se necesita
       $scope.detailsLevel = {
         availableOptions: [
           {id: '1', name: 'Bajo'},
           {id: '2', name: 'Medio'},
           {id: '3', name: 'Alto'},
           {id: '4', name: 'Crítico'}
-        ],
-        selectedOption: {id:  $scope.currentIssue.level}
+        ]
       };
-      //estado de la incidencia: abierta, resolviéndose, se necesita
       //feedback, cerrada, resuelta, duplicada o no se resuelve
       $scope.detailsState =  {
         availableOptions: [
@@ -47,21 +87,29 @@ angular.module('cycleItCustomerServiceApp')
           {id: '5', name: 'Resuelta'},
           {id: '6', name: 'Duplicada'},
           {id: '7', name: 'No se resuelve'}
-        ],
-        selectedOption: {id: $scope.currentIssue.state}
+        ]
       };
-    };
+    }
+    function showForm(){
+      $scope.showNewHistory = false;
+      $scope.showFormDetails = true;
+      $scope.edit = false;
+    }
 
+    function hideForm(){
+      $scope.showFormDetails = false;
+      $scope.edit = false;
+    }
 
-    $scope.save = function(currentIssue){
-      console.log(currentIssue.histories);
-      if(currentIssue.histories == "undefined"){
-        currentIssue.histories =[];
-      }
-      //console.log($scope.newHistory);
-      currentIssue.histories.push($scope.newHistory);
-      $scope.issues.$save(currentIssue);
-    };
+    function enableEdit(){
+      $scope.edit = true;
+    }
+
+    function disabledEdit(){
+      $scope.newHistory = "";
+      $scope.showNewHistory = false;
+      $scope.edit = false;
+    }
 
     function alert(msg) {
       $scope.err = msg;
