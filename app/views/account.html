@@ -1,16 +1,16 @@
-
+<wi-navbar></wi-navbar>
 <div class="row-fluid">
 <div class="col-md-4">
-  <h3>Profile</h3>
+  <h3>Perfil</h3>
 
   <form role="form">
     <p class="form-group">
-      <label>Account ID</label>
+      <label>ID</label>
       <br />{{user.uid}}
     </p>
 
     <p class="form-group">
-      <label>Name:</label>
+      <label>Nombre:</label>
       <input type="text" name="name" ng-model="profile.name" class="form-control" />
     </p>
 
@@ -27,24 +27,24 @@
 
 <div class="col-md-4">
 <form role="form">
-  <h3>Change Password</h3>
+  <h3>Cambiar Contraseña</h3>
 
   <p class="form-group">
-    <label>Old Password:</label>
+    <label>Antigua Contraseña:</label>
     <input type="password" ng-keypress="clear()" ng-model="oldpass" class="form-control" />
   </p>
 
   <p class="form-group">
-    <label>New Password:</label>
+    <label>Nueva Contraseña:</label>
     <input type="password" ng-keypress="clear()" ng-model="newpass" class="form-control" />
   </p>
 
   <p class="form-group">
-    <label>Confirm New Password:</label>
+    <label>Confirmar Nueva Contraseña:</label>
     <input type="password" ng-keypress="clear()" ng-model="confirm" class="form-control" />
   </p>
 
-  <button class="btn btn-primary" ng-click="changePassword(oldpass, newpass, confirm)">change password</button>
+  <button class="btn btn-primary" ng-click="changePassword(oldpass, newpass, confirm)">Confirmar</button>
 
   <p class="error" ng-show="err">{{err}}</p>
   <p class="good" ng-show="msg">{{msg}}</p>
@@ -53,19 +53,19 @@
 
 <div class="col-md-4">
 <form>
-  <h3>Change Email</h3>
+  <h3>Cambiar Email</h3>
 
   <p class="form-group">
-    <label>New Email:</label>
+    <label>Nuevo Email:</label>
     <input type="text" ng-keypress="clear()" ng-model="newEmail" class="form-control" />
   </p>
 
   <p class="form-group">
-    <label>Password:</label>
+    <label>Contraseña:</label>
     <input type="password" ng-keypress="clear()" ng-model="pass" class="form-control" />
   </p>
 
-  <button class="btn btn-primary" ng-click="changeEmail(pass, newEmail)">update email</button>
+  <button class="btn btn-primary" ng-click="changeEmail(pass, newEmail)">Actualizar Email</button>
 </form>
 </div>
 

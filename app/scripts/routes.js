@@ -76,7 +76,6 @@ angular.module('cycleItCustomerServiceApp')
       })
       .when('/main', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
         resolve: {
           "currentAuth": ["Auth", function(Auth) {
             return Auth.$requireAuth();

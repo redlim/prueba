@@ -7,14 +7,17 @@
  * Provides rudimentary account management functions.
  */
 angular.module('cycleItCustomerServiceApp')
-  .controller('AccountCtrl', function ($scope, Auth, Ref, $firebaseObject, $timeout) {
+  .controller('AccountCtrl', function ($scope, Auth, Ref, $firebaseObject, $timeout, $location) {
     $scope.auth = Auth;
     $scope.auth.$onAuth(function(authData) {
       $scope.user = authData;
       var profile = $firebaseObject(Ref.child('users/'+authData.uid));
       profile.$bindTo($scope, 'profile');
     });
-    $scope.logout = function() { Auth.$unauth(); };
+    $scope.logout = function() {
+      Auth.$unauth();
+      $location.path('/');
+    };
     $scope.messages = [];
     //var profile = $firebaseObject(Ref.child('users/'+user.uid));
     //profile.$bindTo($scope, 'profile');

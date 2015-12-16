@@ -1,0 +1,31 @@
+<div class="header" ng-cloak="">
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="#/main"><img class=" img-circle" src="images/logo.png" alt="Cycle It"></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="js-navbar-collapse">
+
+        <ul class="nav navbar-nav">
+          <li ng-class="{active : navbarCtrl.isSet(1)}"><a ng-click="navbarCtrl.set(1)" href="#/main">Home</a></li>
+          <!-- //angularfire -->
+          <li ng-class="{active : navbarCtrl.isSet(2)}"><a ng-click="navbarCtrl.set(2)" ng-href="#/issues">Incidencias</a></li>
+          <li ng-class="{active : navbarCtrl.isSet(3)}">
+            <a ng-hide-auth="" href="#/login" ng-click="navbarCtrl.set(3)">log in</a>
+            <a ng-show-auth="" href="#/account" ng-click="navbarCtrl.set(3)">Cuenta</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

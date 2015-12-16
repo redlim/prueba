@@ -7,7 +7,7 @@
  * Manages authentication to any active providers.
  */
 angular.module('cycleItCustomerServiceApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $q, Ref, $timeout) {
+  .controller('LoginCtrl', ['$scope','Auth', '$location', '$q', 'Ref', '$timeout',function ($scope, Auth, $location, $q, Ref, $timeout) {
     $scope.passwordLogin = function(email, pass) {
       $scope.err = null;
       Auth.$authWithPassword({email: email, password: pass}, {rememberMe: true}).then(
@@ -71,4 +71,4 @@ angular.module('cycleItCustomerServiceApp')
     }
 
 
-  });
+  }]);
